@@ -1,5 +1,5 @@
 module com.piggydoom {
-    requires javafx.controls;
+    requires transitive javafx.controls;
     requires javafx.fxml;
     requires transitive javafx.base;
     requires transitive javafx.graphics;
