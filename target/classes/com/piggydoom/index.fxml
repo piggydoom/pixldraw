@@ -7,7 +7,7 @@
 
 <AnchorPane fx:id="anchorPane" prefHeight="650.0" prefWidth="650.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piggydoom.Controller">
    <children>
-      <Canvas fx:id="canvas" height="500.0" layoutX="75.0" layoutY="82.0" onMouseMoved="#handleMouseMoved" width="500.0" />
+      <Canvas fx:id="canvas" height="500.0" layoutX="75.0" layoutY="82.0" onMouseClicked="#drawPixel" onMouseDragged="#drawPixel" width="500.0" />
       <ColorPicker fx:id="colourSel" layoutX="13.0" layoutY="24.0" onAction="#updateColor">
          <value>
             <Color />

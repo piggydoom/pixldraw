@@ -46,16 +46,10 @@ public class Controller {
     System.out.println(selectedColor);
     }
 
-    
-
     @FXML
-    public void handleMouseMoved(MouseEvent event) {
+    public void drawPixel(MouseEvent event) {
         x = Math.floor(event.getX() / 10) * 10;
         y = Math.floor(event.getY() / 10) * 10;
-        System.out.println(event.isPrimaryButtonDown());
-
-        if(event.isPrimaryButtonDown()){
         ctx.fillRect(x, y, 10, 10);
-        }
     }
 }
