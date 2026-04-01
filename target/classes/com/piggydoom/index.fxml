@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.Color?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="650.0" prefWidth="650.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piggydoom.Controller">
+
+<AnchorPane fx:id="anchorPane" prefHeight="650.0" prefWidth="650.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piggydoom.Controller">
    <children>
+      <Canvas fx:id="gridCanvas" height="500.0" layoutX="75.0" layoutY="82.0" onMouseClicked="#drawPixel" onMouseDragged="#drawPixel" width="500.0" />
       <Canvas fx:id="canvas" height="500.0" layoutX="75.0" layoutY="82.0" onMouseClicked="#drawPixel" onMouseDragged="#drawPixel" width="500.0" />
       <ColorPicker fx:id="colourSel" layoutX="13.0" layoutY="24.0" onAction="#updateColor">
          <value>
             <Color />
          </value>
       </ColorPicker>
+      <ColorPicker fx:id="gridColourSetting" layoutX="155.0" layoutY="24.0" onAction="#updateGrid" visible="false">
+         <value>
+            <Color />
+         </value>
+      </ColorPicker>
+      <MenuButton fx:id="gridSettingsButton" layoutX="155.0" layoutY="24.0" mnemonicParsing="false" text="Grid Settings">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#toggleGCSdisp" text="Grid Colour and Opacity" />
+            <CheckMenuItem fx:id="gridDisplaySetting" mnemonicParsing="false" onAction="#updateGrid" selected="true" text="Display Grid" />
+        </items>
+      </MenuButton>
+      <Button fx:id="downloadCanvasButton" layoutX="273.0" layoutY="24.0" mnemonicParsing="false" text="Download" />
    </children>
 </AnchorPane>
