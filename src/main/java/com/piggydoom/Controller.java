@@ -1,6 +1,9 @@
 package com.piggydoom;
 
+import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,9 +19,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-// import java.awt.image.RenderedImage;
+import java.awt.image.RenderedImage;
 import javafx.scene.image.Image;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.WritableImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+
 // import javafx.embed.swing.SwingFXUtils;
 
 public class Controller {
@@ -30,7 +38,7 @@ public class Controller {
     public Canvas canvas;
 
     @FXML
-    public Canvas gridCanvas;
+    public Canvas overlayCanvas;
 
     @FXML
     public ColorPicker gridColourSetting;
@@ -42,62 +50,68 @@ public class Controller {
     public ColorPicker colourSel;
 
     GraphicsContext ctx;
-    GraphicsContext ctxGrid;
+    GraphicsContext ctxOverlay;
     double x = 0;
     double y = 0;
+    double Ox = 0;
+    double Oy = 0;
     boolean mouseDown = false;
 
     public void toggleGCSdisp() {
-        if (gridColourSetting.isVisible()) {
+        if (gridColourSetting.isShowing()) {
             gridColourSetting.hide();
         } else {
             gridColourSetting.show();
         }
     }
 
-    public void downloadCanvas(){
-        // WritableImage writableImage = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
-        // canvas.snapshot(null, writableImage);
-        // RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
-        System.out.println(System.getProperty("javafx.runtime.version"));
+    public void downloadCanvas() throws IOException{
+        WritableImage writableImage = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
+        canvas.snapshot(null, writableImage);
+        ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null), "png", new File("testName.png"));
+    }
 
+    public void updateOverlay(MouseEvent event) {
+        updateGrid();
+        Ox = Math.floor(event.getX() / 10) * 10;
+        Oy = Math.floor(event.getY() / 10) * 10;
+
+        ctxOverlay.setFill(Color.CYAN);
+        ctxOverlay.fillRect(Ox, Oy, 10, 10);
     }
 
     public void updateGrid() {
-        ctxGrid.setFill(Color.WHITE);
-        ctxGrid.fillRect(0, 0, 500, 500);
+        ctxOverlay.setFill(Color.WHITE);
+        ctxOverlay.fillRect(0, 0, 500, 500);
 
         if (gridDisplaySetting.isSelected()) {
-            ctxGrid.setStroke(gridColourSetting.getValue());
-            ctxGrid.setLineWidth(2);
+            ctxOverlay.setStroke(gridColourSetting.getValue());
+            ctxOverlay.setLineWidth(2);
             for (int gridYhop = 0; gridYhop < 510; gridYhop += 10) {
-                ctxGrid.strokeLine(0, gridYhop, 500, gridYhop);
+                ctxOverlay.strokeLine(0, gridYhop, 500, gridYhop);
             }
             for (int gridXhop = 0; gridXhop < 510; gridXhop += 10) {
-                ctxGrid.strokeLine(gridXhop, 0, gridXhop, 500);
+                ctxOverlay.strokeLine(gridXhop, 0, gridXhop, 500);
             }
         } else {
-            ctxGrid.setFill(Color.WHITE);
-            ctxGrid.fillRect(0, 0, 500, 500);
+            ctxOverlay.setFill(Color.WHITE);
+            ctxOverlay.fillRect(0, 0, 500, 500);
         }
     }
 
-    @FXML
     public void initialize() {
         ctx = canvas.getGraphicsContext2D();
-        ctxGrid = gridCanvas.getGraphicsContext2D();
+        ctxOverlay = overlayCanvas.getGraphicsContext2D();
         gridColourSetting.setValue(Color.BLACK);
         updateGrid();
     }
 
-    @FXML
     public void updateColor() {
         Color selectedColor = colourSel.getValue();
         ctx.setFill(selectedColor);
         System.out.println(selectedColor);
     }
 
-    @FXML
     public void drawPixel(MouseEvent event) {
         x = Math.floor(event.getX() / 10) * 10;
         y = Math.floor(event.getY() / 10) * 10;
