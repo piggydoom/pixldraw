@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.CheckMenuItem;
@@ -16,9 +17,12 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import javafx.scene.image.Image;
 import javafx.embed.swing.SwingFXUtils;
@@ -55,6 +59,8 @@ public class Controller {
     double y = 0;
     double Ox = 0;
     double Oy = 0;
+    double pOx = 0;
+    double pOy = 0;
     boolean mouseDown = false;
 
     public void toggleGCSdisp() {
@@ -66,18 +72,28 @@ public class Controller {
     }
 
     public void downloadCanvas() throws IOException{
+
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+
         WritableImage writableImage = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
-        canvas.snapshot(null, writableImage);
-        ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null), "png", new File("testName.png"));
+        canvas.snapshot(params, writableImage);
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
+        ImageIO.write(bufferedImage, "png", new File("testName.png"));
     }
 
     public void updateOverlay(MouseEvent event) {
-        updateGrid();
+        ctxOverlay.setFill(Color.WHITE);
+        ctxOverlay.fillRect(pOx, pOy, 10, 10);
+        ctxOverlay.setStroke(gridColourSetting.getValue());
+        ctxOverlay.strokeRect(pOx, pOy, 10, 10);
         Ox = Math.floor(event.getX() / 10) * 10;
         Oy = Math.floor(event.getY() / 10) * 10;
-
-        ctxOverlay.setFill(Color.CYAN);
+        Paint currentColor = ctx.getFill();
+        ctxOverlay.setFill(currentColor);
         ctxOverlay.fillRect(Ox, Oy, 10, 10);
+        pOx = Ox;
+        pOy = Oy;
     }
 
     public void updateGrid() {
@@ -94,8 +110,8 @@ public class Controller {
                 ctxOverlay.strokeLine(gridXhop, 0, gridXhop, 500);
             }
         } else {
-            ctxOverlay.setFill(Color.WHITE);
-            ctxOverlay.fillRect(0, 0, 500, 500);
+            // ctxOverlay.setFill(Color.WHITE);
+            // ctxOverlay.fillRect(0, 0, 500, 500);
         }
     }
 
