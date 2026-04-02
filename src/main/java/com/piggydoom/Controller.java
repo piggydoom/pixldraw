@@ -7,9 +7,11 @@ import javax.imageio.ImageIO;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.MenuItem;
@@ -61,7 +63,26 @@ public class Controller {
     double Oy = 0;
     double pOx = 0;
     double pOy = 0;
+    double xStart;
+    double yStart;
     boolean mouseDown = false;
+    boolean firstPointDefined = false;
+    String drawMode = "base";
+
+    public void swapDrawMode(ActionEvent event) {
+        String id = ((Button) event.getSource()).getId();
+        switch (id) {
+            case "baseDrawButton":
+                System.out.println("BaseDraw Clicked");
+                drawMode = "base";
+                break;
+            case "rectDrawButton":
+                System.out.println("RectDraw Clicked");
+                drawMode = "rect";
+                System.out.println(drawMode);
+                break;
+        }
+    }
 
     public void toggleGCSdisp() {
         if (gridColourSetting.isShowing()) {
@@ -71,7 +92,7 @@ public class Controller {
         }
     }
 
-    public void downloadCanvas() throws IOException{
+    public void downloadCanvas() throws IOException {
 
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
@@ -99,8 +120,8 @@ public class Controller {
     public void updateGrid() {
         ctxOverlay.setFill(Color.WHITE);
         ctxOverlay.fillRect(0, 0, 500, 500);
-
         if (gridDisplaySetting.isSelected()) {
+
             ctxOverlay.setStroke(gridColourSetting.getValue());
             ctxOverlay.setLineWidth(2);
             for (int gridYhop = 0; gridYhop < 510; gridYhop += 10) {
@@ -109,9 +130,6 @@ public class Controller {
             for (int gridXhop = 0; gridXhop < 510; gridXhop += 10) {
                 ctxOverlay.strokeLine(gridXhop, 0, gridXhop, 500);
             }
-        } else {
-            // ctxOverlay.setFill(Color.WHITE);
-            // ctxOverlay.fillRect(0, 0, 500, 500);
         }
     }
 
@@ -129,11 +147,38 @@ public class Controller {
     }
 
     public void drawPixel(MouseEvent event) {
-        x = Math.floor(event.getX() / 10) * 10;
-        y = Math.floor(event.getY() / 10) * 10;
-        ctx.fillRect(x, y, 10, 10);
+        if (drawMode.equals("base")) {
+            x = Math.floor(event.getX() / 10) * 10;
+            y = Math.floor(event.getY() / 10) * 10;
+            ctx.fillRect(x, y, 10, 10);
+        }
     }
 
-    
+    public void singleClickDrawFunctions(MouseEvent event) {
+        // x = Math.floor(event.getX() / 10) * 10;
+        // y = Math.floor(event.getY() / 10) * 10;
+        x = event.getX();
+        y = event.getY();
+
+        if (drawMode.equals("base")) {
+            ctx.fillRect(x, y, 10, 10);
+
+        } else if (drawMode.equals("rect")) {
+            if (!firstPointDefined) {
+                xStart = x;
+                yStart = y;
+                firstPointDefined = true;
+            } else if (firstPointDefined) {
+                if(x> xStarts)
+
+                if (x > xStart) {
+                    ctx.fillRect(xStart, yStart, x - xStart, y - yStart);
+                } else {
+                    ctx.fillRect(x, y, xStart - x, yStart - y);
+                }
+                firstPointDefined = false;
+            }
+        }
+    }
 
 }
