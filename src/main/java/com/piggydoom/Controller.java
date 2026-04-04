@@ -14,6 +14,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
@@ -23,8 +24,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import java.awt.image.BufferedImage;
+import javafx.scene.control.TextField;
 import java.awt.image.RenderedImage;
 import javafx.scene.image.Image;
 import javafx.embed.swing.SwingFXUtils;
@@ -55,6 +56,10 @@ public class Controller {
     @FXML
     public ColorPicker colourSel;
 
+    @FXML
+    private TextField canvasSize;
+
+    int cS = 500;
     GraphicsContext ctx;
     GraphicsContext ctxOverlay;
     double x = 0;
@@ -74,6 +79,19 @@ public class Controller {
     boolean firstPointDefined = false;
     String drawMode = "base";
 
+    public void initialize() {
+            ctx = canvas.getGraphicsContext2D();
+            ctxOverlay = overlayCanvas.getGraphicsContext2D();
+            gridColourSetting.setValue(Color.BLACK);
+            updateGrid();
+
+            canvasSize.setOnAction(event -> {
+                cS = Integer.parseInt(canvasSize.getText());
+                updateGrid();
+                System.out.println(cS);
+            });
+        }
+        
     public void swapDrawMode(ActionEvent event) {
         String id = ((Button) event.getSource()).getId();
         switch (id) {
@@ -97,7 +115,6 @@ public class Controller {
     }
 
     public void downloadCanvas() throws IOException {
-
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
 
@@ -108,6 +125,8 @@ public class Controller {
     }
 
     public void updateOverlay(MouseEvent event) {
+        canvas.setWidth(cS);
+        canvas.setHeight(cS);
         ctxOverlay.setFill(Color.WHITE);
         ctxOverlay.fillRect(pOx, pOy, 10, 10);
         ctxOverlay.setStroke(gridColourSetting.getValue());
@@ -122,27 +141,23 @@ public class Controller {
     }
 
     public void updateGrid() {
+        ctxOverlay.clearRect(0, 0, 500, 500);
         ctxOverlay.setFill(Color.WHITE);
-        ctxOverlay.fillRect(0, 0, 500, 500);
+        ctxOverlay.fillRect(0, 0, cS, cS);
         if (gridDisplaySetting.isSelected()) {
 
             ctxOverlay.setStroke(gridColourSetting.getValue());
             ctxOverlay.setLineWidth(2);
-            for (int gridYhop = 0; gridYhop < 510; gridYhop += 10) {
-                ctxOverlay.strokeLine(0, gridYhop, 500, gridYhop);
+            for (int gridYhop = 0; gridYhop < cS + 10; gridYhop += 10) {
+                ctxOverlay.strokeLine(0, gridYhop, cS, gridYhop);
             }
-            for (int gridXhop = 0; gridXhop < 510; gridXhop += 10) {
-                ctxOverlay.strokeLine(gridXhop, 0, gridXhop, 500);
+            for (int gridXhop = 0; gridXhop < cS + 10; gridXhop += 10) {
+                ctxOverlay.strokeLine(gridXhop, 0, gridXhop, cS);
             }
         }
     }
 
-    public void initialize() {
-        ctx = canvas.getGraphicsContext2D();
-        ctxOverlay = overlayCanvas.getGraphicsContext2D();
-        gridColourSetting.setValue(Color.BLACK);
-        updateGrid();
-    }
+    
 
     public void updateColor() {
         Color selectedColor = colourSel.getValue();

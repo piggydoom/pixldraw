@@ -4,8 +4,11 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.CustomMenuItem?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.Color?>
 
@@ -27,6 +30,15 @@
         <items>
           <MenuItem mnemonicParsing="false" onAction="#toggleGCSdisp" text="Grid Colour and Opacity" />
             <CheckMenuItem fx:id="gridDisplaySetting" mnemonicParsing="false" onAction="#updateGrid" selected="true" text="Display Grid" />
+            <CustomMenuItem mnemonicParsing="false" text="Unspecified Action">
+               <content>
+                  <Label text="canvas size">
+                     <graphic>
+                        <TextField fx:id="canvasSize" text="500"/>
+                     </graphic>
+                  </Label>
+               </content>
+            </CustomMenuItem>
         </items>
       </MenuButton>
       <Button fx:id="downloadCanvasButton" layoutX="504.0" layoutY="24.0" mnemonicParsing="false" onAction="#downloadCanvas" text="Download" />
