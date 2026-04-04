@@ -63,8 +63,13 @@ public class Controller {
     double Oy = 0;
     double pOx = 0;
     double pOy = 0;
-    double xStart;
-    double yStart;
+    double xStart = 0;
+    double yStart = 0;
+    double rectX = 0;
+    double rectY = 0;
+    double rectW = 0;
+    double rectH = 0;
+    double diameter = 0;
     boolean mouseDown = false;
     boolean firstPointDefined = false;
     String drawMode = "base";
@@ -73,15 +78,14 @@ public class Controller {
         String id = ((Button) event.getSource()).getId();
         switch (id) {
             case "baseDrawButton":
-                System.out.println("BaseDraw Clicked");
                 drawMode = "base";
                 break;
             case "rectDrawButton":
-                System.out.println("RectDraw Clicked");
                 drawMode = "rect";
-                System.out.println(drawMode);
                 break;
         }
+        System.out.println(drawMode);
+        firstPointDefined = false;
     }
 
     public void toggleGCSdisp() {
@@ -155,29 +159,42 @@ public class Controller {
     }
 
     public void singleClickDrawFunctions(MouseEvent event) {
-        // x = Math.floor(event.getX() / 10) * 10;
-        // y = Math.floor(event.getY() / 10) * 10;
-        x = event.getX();
-        y = event.getY();
+        x = Math.floor(event.getX() / 10) * 10;
+        y = Math.floor(event.getY() / 10) * 10;
+        // x = event.getX();
+        // y = event.getY();
 
-        if (drawMode.equals("base")) {
+        switch(drawMode){
+            case "base":
             ctx.fillRect(x, y, 10, 10);
+            break;
 
-        } else if (drawMode.equals("rect")) {
-            if (!firstPointDefined) {
+            case "rect": 
+             if (!firstPointDefined) {
                 xStart = x;
                 yStart = y;
                 firstPointDefined = true;
-            } else if (firstPointDefined) {
-                if(x> xStarts)
+            } else{
+                    if(xStart < x){
+                        rectW = x - xStart + 10;
+                        rectX = xStart;
+                    } else{
+                        rectW = xStart - x + 10;
+                        rectX = x;
+                    }
 
-                if (x > xStart) {
-                    ctx.fillRect(xStart, yStart, x - xStart, y - yStart);
-                } else {
-                    ctx.fillRect(x, y, xStart - x, yStart - y);
-                }
+                    if(yStart < y){
+                        rectH = y - yStart + 10;
+                        rectY = yStart;
+                    } else{
+                        rectH = yStart - y + 10;
+                        rectY = y;
+                    }
+
+                ctx.fillRect(rectX, rectY, rectW, rectH);
                 firstPointDefined = false;
             }
+            break;
         }
     }
 

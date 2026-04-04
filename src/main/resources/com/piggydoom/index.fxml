@@ -23,13 +23,13 @@
             <Color />
          </value>
       </ColorPicker>
-      <MenuButton fx:id="gridSettingsButton" layoutX="431.0" layoutY="24.0" mnemonicParsing="false" text="Grid Settings">
+      <MenuButton fx:id="gridSettingsButton" layoutX="385.0" layoutY="24.0" mnemonicParsing="false" text="Grid Settings">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#toggleGCSdisp" text="Grid Colour and Opacity" />
             <CheckMenuItem fx:id="gridDisplaySetting" mnemonicParsing="false" onAction="#updateGrid" selected="true" text="Display Grid" />
         </items>
       </MenuButton>
-      <Button fx:id="downloadCanvasButton" layoutX="539.0" layoutY="24.0" mnemonicParsing="false" onAction="#downloadCanvas" text="Download" />
+      <Button fx:id="downloadCanvasButton" layoutX="504.0" layoutY="24.0" mnemonicParsing="false" onAction="#downloadCanvas" text="Download" />
       <Button fx:id="baseDrawButton" layoutX="217.0" layoutY="24.0" mnemonicParsing="false" onAction="#swapDrawMode" text="base" />
       <Button fx:id="rectDrawButton" layoutX="261.0" layoutY="24.0" mnemonicParsing="false" onAction="#swapDrawMode" text="rect" />
    </children>
