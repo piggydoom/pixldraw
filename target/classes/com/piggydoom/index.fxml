@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.paint.Color?>
@@ -18,20 +19,29 @@
       <Pane layoutX="25.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="650.0" prefWidth="650.0"> 
       <Canvas fx:id="overlayCanvas" height="500.0" layoutX="75.0" layoutY="80.0" width="500.0" />
       <Canvas fx:id="canvas" height="500.0" layoutX="75.0" layoutY="80.0" onMouseClicked="#singleClickDrawFunctions" onMouseDragged="#drawPixel" onMouseMoved="#updateOverlay" width="500.0" />
-      <ColorPicker fx:id="colourSel" layoutX="75.0" layoutY="24.0" onAction="#updateColor">
-         <value>
-            <Color />
-         </value>
-      </ColorPicker>
+      
       <ColorPicker fx:id="gridColourSetting" layoutX="155.0" layoutY="24.0" onAction="#updateGrid" visible="false">
          <value>
             <Color />
          </value>
       </ColorPicker>
-      <MenuButton fx:id="gridSettingsButton" layoutX="385.0" layoutY="24.0" mnemonicParsing="false" text="Grid Settings">
+      
+      
+      
+         <ToolBar fx:id="toolBar" layoutX="17.0" layoutY="17.0" prefHeight="40.0" prefWidth="616.0">
+           <items>
+             
+         <ColorPicker fx:id="colourSel" layoutX="75.0" layoutY="24.0" onAction="#updateColor">
+            <value>
+               <Color />
+            </value>
+         </ColorPicker>
+
+         <MenuButton fx:id="gridSettingsButton" layoutX="392.0" layoutY="24.0" mnemonicParsing="false" styleClass="toolbarItems" text="Grid Settings">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#toggleGCSdisp" text="Grid Colour and Opacity" />
             <CheckMenuItem fx:id="gridDisplaySetting" mnemonicParsing="false" onAction="#updateGrid" selected="true" text="Display Grid" />
+                     <CheckMenuItem fx:id="gridXYLines" mnemonicParsing="false" onAction="#updateGrid" selected="true" text="X &amp; Y Lines" />
             <CustomMenuItem mnemonicParsing="false" text="Unspecified Action">
                <content>
                   <Label text="canvas size">
@@ -43,9 +53,16 @@
             </CustomMenuItem>
         </items>
       </MenuButton>
-      <Button fx:id="downloadCanvasButton" layoutX="504.0" layoutY="24.0" mnemonicParsing="false" onAction="#downloadCanvas" text="Download" />
-      <Button fx:id="baseDrawButton" layoutX="217.0" layoutY="24.0" mnemonicParsing="false" onAction="#swapDrawMode" text="base" />
-      <Button fx:id="rectDrawButton" layoutX="261.0" layoutY="24.0" mnemonicParsing="false" onAction="#swapDrawMode" text="rect" />
+
+               <Button fx:id="downloadCanvasButton" layoutX="504.0" layoutY="24.0" mnemonicParsing="false" onAction="#downloadCanvas" styleClass="toolbarItems" text="Download" />
+
+         <Button fx:id="baseDrawButton" mnemonicParsing="false" onAction="#swapDrawMode" styleClass="toolbarItems" text="base" />
+         <Button fx:id="rectDrawButton" mnemonicParsing="false" onAction="#swapDrawMode" styleClass="toolbarItems" text="rect" />
+         <Button fx:id="circleDrawButton" mnemonicParsing="false" onAction="#swapDrawMode" styleClass="toolbarItems" text="circle" />
+               <Button fx:id="clearCanvasButton" layoutX="243.0" layoutY="12.0" mnemonicParsing="false" onAction="#swapDrawMode" styleClass="toolbarItems" text="clear canvas" />
+
+           </items>
+         </ToolBar>
       </Pane>
    </children>
 </AnchorPane>
