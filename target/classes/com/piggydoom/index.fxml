@@ -10,12 +10,14 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.paint.Color?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="650.0" prefWidth="650.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piggydoom.Controller">
+<AnchorPane fx:id="anchorPane" prefHeight="700.0" prefWidth="700.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piggydoom.Controller">
    <children>
-      <Canvas fx:id="overlayCanvas" height="500.0" layoutX="75.0" layoutY="82.0" width="500.0" />
-      <Canvas fx:id="canvas" height="500.0" layoutX="75.0" layoutY="82.0" onMouseClicked="#singleClickDrawFunctions" onMouseDragged="#drawPixel" onMouseMoved="#updateOverlay" width="500.0" />
+      <Pane layoutX="25.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="650.0" prefWidth="650.0"> 
+      <Canvas fx:id="overlayCanvas" height="500.0" layoutX="75.0" layoutY="80.0" width="500.0" />
+      <Canvas fx:id="canvas" height="500.0" layoutX="75.0" layoutY="80.0" onMouseClicked="#singleClickDrawFunctions" onMouseDragged="#drawPixel" onMouseMoved="#updateOverlay" width="500.0" />
       <ColorPicker fx:id="colourSel" layoutX="75.0" layoutY="24.0" onAction="#updateColor">
          <value>
             <Color />
@@ -34,7 +36,7 @@
                <content>
                   <Label text="canvas size">
                      <graphic>
-                        <TextField fx:id="canvasSize" text="500"/>
+                        <TextField fx:id="canvasSize" text="500" />
                      </graphic>
                   </Label>
                </content>
@@ -44,5 +46,6 @@
       <Button fx:id="downloadCanvasButton" layoutX="504.0" layoutY="24.0" mnemonicParsing="false" onAction="#downloadCanvas" text="Download" />
       <Button fx:id="baseDrawButton" layoutX="217.0" layoutY="24.0" mnemonicParsing="false" onAction="#swapDrawMode" text="base" />
       <Button fx:id="rectDrawButton" layoutX="261.0" layoutY="24.0" mnemonicParsing="false" onAction="#swapDrawMode" text="rect" />
+      </Pane>
    </children>
 </AnchorPane>

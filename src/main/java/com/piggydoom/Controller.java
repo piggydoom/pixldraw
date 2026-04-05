@@ -85,10 +85,14 @@ public class Controller {
             gridColourSetting.setValue(Color.BLACK);
             updateGrid();
 
+            overlayCanvas.widthProperty().bind(canvas.widthProperty());
+            overlayCanvas.heightProperty().bind(canvas.heightProperty());
+            overlayCanvas.layoutXProperty().bind(canvas.layoutXProperty());
+            overlayCanvas.layoutYProperty().bind(canvas.layoutYProperty());
+
             canvasSize.setOnAction(event -> {
                 cS = Integer.parseInt(canvasSize.getText());
                 updateGrid();
-                System.out.println(cS);
             });
         }
         
@@ -125,10 +129,9 @@ public class Controller {
     }
 
     public void updateOverlay(MouseEvent event) {
-        canvas.setWidth(cS);
-        canvas.setHeight(cS);
         ctxOverlay.setFill(Color.WHITE);
         ctxOverlay.fillRect(pOx, pOy, 10, 10);
+
         ctxOverlay.setStroke(gridColourSetting.getValue());
         ctxOverlay.strokeRect(pOx, pOy, 10, 10);
         Ox = Math.floor(event.getX() / 10) * 10;
@@ -138,10 +141,41 @@ public class Controller {
         ctxOverlay.fillRect(Ox, Oy, 10, 10);
         pOx = Ox;
         pOy = Oy;
+    if(drawMode.equals("base")){
+            
+            }else if(drawMode.equals("rect")){
+                updateGrid();
+                ctxOverlay.setFill(currentColor);
+                if(firstPointDefined){
+                    if(xStart < Ox){
+                        rectW = Ox - xStart + 10;
+                        rectX = xStart;
+                    } else{
+                        rectW = xStart - Ox + 10;
+                        rectX = Ox;
+                    }
+
+                    if(yStart < Oy){
+                        rectH = Oy - yStart + 10;
+                        rectY = yStart;
+                    } else{
+                        rectH = yStart - Oy + 10;
+                        rectY = Oy;
+                    }
+                    
+                    ctxOverlay.fillRect(rectX, rectY, rectW, rectH);
+
+                }
+        }
     }
 
     public void updateGrid() {
-        ctxOverlay.clearRect(0, 0, 500, 500);
+        canvas.setWidth(cS);
+        canvas.setHeight(cS);
+        canvas.setLayoutX((650 - cS) / 2);
+        canvas.setLayoutY((650 - cS) / 2);
+
+        ctxOverlay.clearRect(0, 0, cS, cS);
         ctxOverlay.setFill(Color.WHITE);
         ctxOverlay.fillRect(0, 0, cS, cS);
         if (gridDisplaySetting.isSelected()) {
